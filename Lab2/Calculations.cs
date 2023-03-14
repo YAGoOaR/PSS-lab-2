@@ -6,7 +6,7 @@ namespace Lab2
         const bool printResults = true; // Вивід результатів обчислень в консоль
         const bool fullMatrixOutput = false; // Вивід повного вигляду матриць в консоль
 
-        static object consoleColorLocker = new();
+        static object consoleLocker = new();
 
         // Клас Matrix я визначив вручну, як і операції, пов'язані з ним. (Див. файл Matrix.cs) 
         static Matrix Calc_E(Dictionary<string, object> variables)
@@ -22,11 +22,12 @@ namespace Lab2
             if (printResults)
             {
                 // Використання синхронізації потоків за допомогою lock.
-                // Синхронізація тут потрібна для запобігання помилок з узгодженням пам'яті (Memory consistency error) змінної кольору виводу в термінал.
-                // Тобто, якби синхронізація не була використана, потоки б плутали між собою попередній колір, і він перемикався б на зелений, і вивід поламався.
+                // Синхронізація тут потрібна для запобігання помилок з узгодженням пам'яті (Memory consistency error) змінної
+                // кольору виводу в термінал, а також для збереження порядку виводу в термінал з різних потоків.
+                // Тобто, якби синхронізація не була використана, потоки б плутали між собою попередній колір,
+                // і він перемикався б на зелений (а міг бути іншим), і вивід б поламався.
                 // Щодо самого виводу в консоль, то в C# операція Console.WriteLine є потокобезпечною, тобто синхронізованою між потоками.
-                // Міг би переплутатись лише порядок виконання виводу назви матриці та самої матриці (див. нижче)
-                lock (consoleColorLocker)
+                lock (consoleLocker)
                 {
                     ConsoleColor prevColor = Console.ForegroundColor;
                     Console.ForegroundColor = ConsoleColor.Green;
@@ -65,7 +66,7 @@ namespace Lab2
             if (printResults)
             {
                 // Див. коментарі про попередній lock
-                lock (consoleColorLocker)
+                lock (consoleLocker)
                 {
                     ConsoleColor prevColor = Console.ForegroundColor;
                     Console.ForegroundColor = ConsoleColor.Green;
