@@ -11,12 +11,14 @@ namespace Lab2
         // Кількість потоків для паралельного множення
         const int threads = 8;
 
+        // Конструктор матриці за 2д-масивом
         public Matrix(double[,] array)
         {
             values = array;
             shape = (array.GetLength(0), array.GetLength(1));
         }
 
+        // Алгоритм Кахана (тобто метод, що зображує одну ітерацію алгоритму)
         static (double, double) kahan_sum(double sum, double c, double val)
         {
             double y = val - c;
@@ -45,6 +47,7 @@ namespace Lab2
             return result;
         }
 
+        // Послідовне додавання
         public static Matrix operator +(Matrix a, Matrix b)
         {
             double[,] matrixA = a.values;
@@ -73,6 +76,7 @@ namespace Lab2
             return new(resultMatrix);
         }
 
+        // Послідовне віднімання
         public static Matrix operator -(Matrix a, Matrix b)
         {
             double[,] matrixA = a.values;
@@ -136,6 +140,7 @@ namespace Lab2
             return new(resultMatrix);
         }
 
+        // Послідовне множення на число
         public static Matrix operator *(Matrix a, double scalar)
         {
             double[,] matrix = a.values;
@@ -155,7 +160,7 @@ namespace Lab2
 
             return new(resultMatrix);
         }
-
+        // Послідовне множення числа на матрицю
         public static Matrix operator *(double a, Matrix b) => b * a;
 
         // Операція паралельного множення матриць
@@ -196,7 +201,7 @@ namespace Lab2
                         // Насправді, lock тут не потрібен, бо потоки звертаються кожен до своїх, окремих, індексів матриці,
                         // і тому не спричиняють memory consistency помилок.
                         // Lock я додав з тієї причини, що нам потрібно протестувати lock elision.
-                        // Тобто, оскільки блокування можна обійти, це і повинен зробити механізм lock elision. Докладніше в звіті.
+                        // Тобто, оскільки блокування можна обійти, це і повинен (в теорії) зробити механізм lock elision. Докладніше в звіті.
                         lock (testLocker)
                         {
                             resultMatrix[i, j] = sum;
@@ -233,6 +238,7 @@ namespace Lab2
             return $"Matrix {values.GetLength(0)}x{values.GetLength(1)}";
         }
 
+        // Мінімальне значення серед елементів
         internal double Min()
         {
             int rows = values.GetLength(0);

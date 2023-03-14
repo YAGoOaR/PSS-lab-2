@@ -3,7 +3,7 @@ namespace Lab2
 {
     internal class Program
     {
-
+        // Вивід словника даних (наприклад, вхідних змінних)
         static void LogDict(Dictionary<string, object> dict) => Console.WriteLine(string.Join("\n", dict.Select(
                 (kv, _) => kv.Value switch
                 {
