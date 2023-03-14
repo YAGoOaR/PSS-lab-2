@@ -81,11 +81,9 @@ namespace Lab2
 
             if (variablesStringList is null) throw new FileLoadException();
 
-            return variablesStringList.Select(e => e.ToDictionary(x => x.Key, 
-                x => (object)(
+            return variablesStringList.Select(e => e.ToDictionary(x => x.Key, x => (object)(
                     double.TryParse(x.Value, NumberStyles.Any, CultureInfo.InvariantCulture, out double d) ? d : Matrix.MatrixFromJson(x.Value)
-                )
-            )).ToList();
+            ))).ToList();
         }
     }
 }

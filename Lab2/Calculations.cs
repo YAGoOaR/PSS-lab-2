@@ -16,7 +16,6 @@ namespace Lab2
             Matrix MC = (Matrix)variables["MC"];
 
             // E = В * МС + D * min(MC)
-            
             // Символ % я встановив як операцію паралельного множення матриць (див. перевантаження операторів в класі Matrix)
             Matrix E = B % MC + D * MC.Min();
 
