@@ -3,10 +3,11 @@ namespace Lab2
 {
     internal class Program
     {
-        // Вивід словника даних (наприклад, вхідних змінних)
+        // Вивід словника даних (наприклад, словника з назвами та значеннями вхідних змінних)
         static void LogDict(Dictionary<string, object> dict) => Console.WriteLine(string.Join("\n", dict.Select(
                 (kv, _) => kv.Value switch
                 {
+                    // Якщо об’єкт (змінна) є малою матрицею, то дати повний вивід:
                     Matrix { shape: ( <= 10, <= 10) } matrix => $"{kv.Key} =\n{matrix.ToFullString()}",
                     _ => $"{kv.Key} = {kv.Value}",
                 }
